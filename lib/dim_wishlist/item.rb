@@ -3,11 +3,8 @@ require 'dim_wishlist/roll'
 class WishlistItem
   attr_accessor :info, :notes, :rolls
 
-  # rolls schema
-  # { Roll.key(item_id, perks) => [roll...] }
-
   def initialize(lines)
-    @info = []
+    @info  = []
     @notes = []
     @rolls = {}
     lines.each { |line| process(line) }
@@ -44,13 +41,13 @@ class WishlistItem
   end
 
   def handle_wishlist_line(line)
-    params = line.split('dimwishlist:').last.split('&')
+    params      = line.split('dimwishlist:').last.split('&')
     note_params = params.last.split('#notes')
-    notes = note_params.last if note_params.length > 1
-    item_id = params.first.split('=').last
-    perks = params[1].split('=').last.split(',')
+    notes       = note_params.last if note_params.length > 1
+    item_id     = params.first.split('=').last
+    perks       = params[1].split('=').last.split(',')
+    roll        = Roll.new(item_id: item_id, perks: perks, notes: notes)
 
-    roll = Roll.new(item_id: item_id, perks: perks, notes: notes)
     @rolls[roll.key] = roll
   end
 end

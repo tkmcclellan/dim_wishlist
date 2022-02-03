@@ -11,8 +11,8 @@ class Roll
 
   def initialize(item_id:, perks:, notes: nil)
     @item_id = item_id
-    @perks = perks
-    @notes = notes
+    @perks   = perks
+    @notes   = notes
   end
 
   def key

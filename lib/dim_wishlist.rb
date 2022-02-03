@@ -13,7 +13,7 @@ class Wishlist
   class << self
     def parse(wishlist_uri = WISHLIST_URI)
       instance = self.new
-      body = get_wishlist_text(wishlist_uri)
+      body     = get_wishlist_text(wishlist_uri)
 
       return if body.nil?
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'net/http'
+require 'logger'
 
 require 'dim_wishlist/item'
 require 'dim_wishlist/roll'
@@ -10,7 +11,19 @@ class Wishlist
 
   WISHLIST_URI = 'https://raw.githubusercontent.com/48klocs/dim-wish-list-sources/master/choosy_voltron.txt'
 
+  logger = Logger.new(ENV['LOG_DESTINATION'] || $stdout)
+  logger.level = if ENV['LOG_LEVEL']
+                   Object.const_get "Logger::#{ENV['LOG_LEVEL'].upcase}"
+                 else
+                   Logger::INFO
+                 end
+
   class << self
+    def config(log_destination: $stdout, log_level: Logger::INFO)
+      logger = Logger.new(log_destination)
+      logger.level = log_level
+    end
+
     def parse(wishlist_uri = WISHLIST_URI)
       instance = self.new
       body     = get_wishlist_text(wishlist_uri)
@@ -22,7 +35,11 @@ class Wishlist
         if line =~ %r{// [a-zA-Z(]|//notes:|dimwishlist:}
           lines << line
         elsif lines.length.positive?
-          instance.add_item(WishlistItem.new(lines)) rescue nil
+          begin
+            instance.add_item(WishlistItem.parse(lines))
+          rescue => e
+            puts e
+          end
           lines.clear
         end
       end
@@ -46,7 +63,7 @@ class Wishlist
   end
 
   def add_item(wishlist_item)
-    wishlist_item.item_ids.each do |id|
+    wishlist_item.ids.each do |id|
       @items[id] ||= []
       @items[id] << wishlist_item
       @items[id].uniq!

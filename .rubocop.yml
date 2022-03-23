@@ -1,0 +1,198 @@
+# ---------------------------------------------------------------------------------
+#                      _       _                       ____
+#                     | | ___ | |__  _ __  _ __  _   _| ___|
+#                  _  | |/ _ \| '_ \| '_ \| '_ \| | | |___ \
+#                 | |_| | (_) | | | | | | | | | | |_| |___) |
+#                  \___/ \___/|_| |_|_| |_|_| |_|\__, |____/
+#                                                |___/
+# ---------------------------------------------------------------------------------
+# RuboCop config for syxtax enforcement
+# ---------------------------------------------------------------------------------
+
+AllCops:
+  Exclude:
+    - 'Gemfile'
+    - 'Rakefile'
+    - 'bin/**/*'
+    - 'config.ru'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'lib/tasks/**/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'public/**/*'
+    - 'scripts/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+
+# Styling
+# ---------------------------------------------------------------------------------
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: true
+
+    # Layout/ArgumentAlignment:
+    # EnforcedStyle: with_fixed_indentation
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Layout/HashAlignment:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
+Layout/ExtraSpacing:
+  Enabled: false
+  AllowForAlignment: true
+  ForceEqualSignAlignment: true
+
+Style/Documentation:
+  Enabled: false
+
+    # Style/SpaceAfterComma:
+    # Enabled: false
+
+Layout/EmptyLinesAroundAccessModifier:
+  EnforcedStyle: only_before
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/Semicolon:
+  Enabled: false
+
+    # Style/SpaceBeforeSemicolon:
+    # Enabled: false
+
+    # Style/SpaceAroundOperators:
+    # Enabled: false
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+    # Style/EmptyLinesAroundBlockBody:
+  # Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+    # Style/SpaceInsideBrackets:
+    # Enabled: false
+
+Layout/SpaceInsideBlockBraces:
+  EnforcedStyle: space
+  SpaceBeforeBlockParameters: false
+
+    # Style/UnlessElse:
+    # Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Style/SingleLineMethods:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+    # Style/TrailingCommaInLiteral:
+    # Enabled: false
+
+    # Layout/SpaceInsideHashLiteralBraces:
+    # Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+    # Style/EmptyLiteral:
+    # Enabled: false
+
+    # Style/TrailingCommaInArguments:
+    # EnforcedStyleForMultiline: no_comma
+
+# Layout/MultilineOperationIndentation:
+# EnforcedStyle: indented
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Naming/PredicateName:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/ColonMethodCall:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+# Linter
+# ---------------------------------------------------------------------------------
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+
+    # Lint/UnusedMethodArgument:
+    # Enabled: false
+
+    # Lint/UnusedBlockArgument:
+    # Enabled: false
+
+Lint/UselessMethodDefinition:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Lint/RescueException:
+  Enabled: false
+
+# Metrics
+# ---------------------------------------------------------------------------------
+Layout/LineLength:
+  Max: 100
+
+Metrics:
+  Enabled: false
+
+Security/MarshalLoad:
+  Enabled: false

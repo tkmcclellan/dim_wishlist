@@ -3,14 +3,19 @@ require 'dim_wishlist/roll'
 class WishlistItem
   attr_accessor :info, :notes, :rolls
 
-  def initialize(lines)
-    @info  = []
-    @notes = []
-    @rolls = {}
-    lines.each { |line| process(line) }
+  class << self
+    def parse(lines)
+      self.new.parse(lines)
+    end
   end
 
-  def item_ids
+  def initialize(info: [], notes: [], rolls: {})
+    @info  = info
+    @notes = notes
+    @rolls = rolls
+  end
+
+  def ids
     @rolls.values.map(&:item_id).uniq
   end
 
@@ -22,16 +27,19 @@ class WishlistItem
     ["// #{@info.join('. ')}", "// #{@notes.join('. ')}", @rolls.values.map(&:to_s), "\n"].flatten.join("\n")
   end
 
-  private
-
-  def process(line)
-    case line
-    when %r{^// .*} then handle_info_line(line)
-    when %r{^//notes:} then handle_notes_line(line)
-    when /^dimwishlist:/ then handle_wishlist_line(line)
+  def parse(lines)
+    lines.each do |line|
+      case line
+      when %r{^// .*} then handle_info_line(line)
+      when %r{^//notes:} then handle_notes_line(line)
+      when /^dimwishlist:/ then handle_wishlist_line(line)
+      end
     end
+
+    self
   end
 
+  private
   def handle_info_line(line)
     @info << line.split('// ').last
   end
@@ -42,10 +50,10 @@ class WishlistItem
 
   def handle_wishlist_line(line)
     params      = line.split('dimwishlist:').last.split('&')
-    note_params = params.last.split('#notes')
+    note_params = params.last.split('#notes:')
     notes       = note_params.last if note_params.length > 1
     item_id     = params.first.split('=').last
-    perks       = params[1].split('=').last.split(',')
+    perks       = note_params.first.split('=').last.split(',')
     roll        = Roll.new(item_id: item_id, perks: perks, notes: notes)
 
     @rolls[roll.key] = roll

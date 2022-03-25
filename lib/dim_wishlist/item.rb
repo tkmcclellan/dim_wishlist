@@ -9,22 +9,28 @@ class WishlistItem
     end
   end
 
-  def initialize(info: [], notes: [], rolls: {})
+  def initialize(info: [], notes: [], rolls: [])
     @info  = info
     @notes = notes
     @rolls = rolls
   end
 
   def ids
-    @rolls.values.map(&:item_id).uniq
+    @rolls.map(&:item_id).uniq
   end
 
   def has_roll?(item_id, perks)
-    !@rolls[Roll.key(item_id, perks)].nil?
+    @rolls.any? do |roll|
+      roll.item_id == item_id &&
+        roll.perks.all? do |perk|
+          perks.include? perk
+        end
+    end
   end
 
   def to_s
-    ["// #{@info.join('. ')}", "// #{@notes.join('. ')}", @rolls.values.map(&:to_s), "\n"].flatten.join("\n")
+    ["// #{@info.join('. ')}", "// #{@notes.join('. ')}", @rolls.values.map(&:to_s), "\n"]
+      .flatten.join("\n")
   end
 
   def parse(lines)
@@ -54,8 +60,7 @@ class WishlistItem
     notes       = note_params.last if note_params.length > 1
     item_id     = params.first.split('=').last
     perks       = note_params.first.split('=').last.split(',')
-    roll        = Roll.new(item_id: item_id, perks: perks, notes: notes)
 
-    @rolls[roll.key] = roll
+    @rolls << Roll.new(item_id: item_id, perks: perks, notes: notes)
   end
 end

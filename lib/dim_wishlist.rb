@@ -24,7 +24,7 @@ class Wishlist
       logger.level = log_level
     end
 
-    def parse(wishlist_uri = WISHLIST_URI)
+    def parse(wishlist_uri=WISHLIST_URI)
       instance = self.new
       body     = get_wishlist_text(wishlist_uri)
 
@@ -37,7 +37,7 @@ class Wishlist
         elsif lines.length.positive?
           begin
             instance.add_item(WishlistItem.parse(lines))
-          rescue => e
+          rescue StandardError => e
             puts e
           end
           lines.clear
@@ -48,7 +48,6 @@ class Wishlist
     end
 
     private
-
     def get_wishlist_text(wishlist_uri)
       uri = URI(wishlist_uri)
       res = Net::HTTP.get_response(uri)
@@ -57,7 +56,7 @@ class Wishlist
     end
   end
 
-  def initialize(wishlist_items = [])
+  def initialize(wishlist_items=[])
     @items = {}
     wishlist_items.each(&:add_item)
   end
@@ -77,7 +76,7 @@ class Wishlist
   end
 
   def wishlist_item?(id, perks)
-    items_with_id(id).any? { |item| item.has_roll?(id, perks) }
+    items_with_id(id).any? {|item| item.has_roll?(id, perks) }
   end
 
   def to_s
